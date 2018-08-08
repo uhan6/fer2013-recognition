@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# custom
+.idea
+drive/machine_learning/fer2013/data/fer2013.csv
+drive/machine_learning/fer2013/model
+example
