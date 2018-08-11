@@ -7,7 +7,15 @@ import pandas as pd
 # 如果更改此数字，则整个模型架构将更改，并且任何模型都需要重新训练
 IMG_SIZE = 48
 # 数据集标签和描述
-CLASSES_DICT = {0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: "Neutral"}
+CLASSES_DICT = {
+    0: "Angry",
+    1: "Disgust",
+    2: "Fear",
+    3: "Happy",
+    4: "Sad",
+    5: "Surprise",
+    6: "Neutral"
+}
 # 数据类别数
 CLASSES_NUM = 7
 # 样本数量
@@ -17,18 +25,16 @@ TEST_EXAMPLES_NUM = 3589
 ONE_HOT = False
 
 # 测试集, 训练集存储路径
-__TRAIN_DATA_SRC_LOCAL = "../drive/machine_learning/fer2013/data/fer2013.csv"
-__TEST_DATA_SRC_LOCAL = "../drive/machine_learning/fer2013/data/fer2013.csv"
-
-# 在 google drive 上存储的路径
-# __TRAIN_DATA_SRC_DRIVE = "drive/machine_learning/fer2013/data/fer2013.csv"
-# __EVAL_DATA_SRC_DRIVE = "drive/machine_learning/fer2013/data/fer2013.csv"
-
-# 设置在google drive 上运行
-TRAIN_DATA_SRC, TEST_DATA_SRC = __TRAIN_DATA_SRC_LOCAL, __TEST_DATA_SRC_LOCAL
+TRAIN_DATA_SRC = "drive/machine_learning/fer2013/data/fer2013.csv"
+TEST_DATA_SRC = "drive/machine_learning/fer2013/data/fer2013.csv"
 
 
-def load_data(src, mode, train_index=TRAIN_EXAMPLES_NUM, img_size=IMG_SIZE, one_hot=ONE_HOT, classes=CLASSES_NUM):
+def load_data(src,
+              mode,
+              train_index=TRAIN_EXAMPLES_NUM,
+              img_size=IMG_SIZE,
+              one_hot=ONE_HOT,
+              classes=CLASSES_NUM):
     """
     读取整合数据
     训练和测试数据不重复，数据内部不重复
@@ -52,7 +58,7 @@ def load_data(src, mode, train_index=TRAIN_EXAMPLES_NUM, img_size=IMG_SIZE, one_
         images = data_test["pixels"].str.split(" ").values
         images = np.concatenate(images)
 
-    images = np.reshape(images, (-1, img_size ** 2))
+    images = np.reshape(images, (-1, img_size**2))
 
     if one_hot:
         # 转换为 one hot 标签
@@ -72,13 +78,15 @@ class Train:
     _labels = np.array([], dtype=np.float32)
     _batch_index = 0
 
-    def __init__(self, src=TRAIN_DATA_SRC,
+    def __init__(self,
+                 src=TRAIN_DATA_SRC,
                  mode="train",
                  train_index=TRAIN_EXAMPLES_NUM,
                  img_size=IMG_SIZE,
                  one_hot=ONE_HOT,
                  classes=CLASSES_NUM):
-        self._images, self._labels = load_data(src, mode, train_index, img_size, one_hot, classes)
+        self._images, self._labels = load_data(src, mode, train_index,
+                                               img_size, one_hot, classes)
 
     def next_batch_old(self, batch_size=128):
         """随机获得一批数据"""
@@ -110,13 +118,15 @@ class Eval:
     _images = np.array([], dtype=np.float32)
     _labels = np.array([], dtype=np.float32)
 
-    def __init__(self, src=TRAIN_DATA_SRC,
+    def __init__(self,
+                 src=TRAIN_DATA_SRC,
                  mode="test",
                  train_index=TRAIN_EXAMPLES_NUM,
                  img_size=IMG_SIZE,
                  one_hot=ONE_HOT,
                  classes=CLASSES_NUM):
-        self._images, self._labels = load_data(src, mode, train_index, img_size, one_hot, classes)
+        self._images, self._labels = load_data(src, mode, train_index,
+                                               img_size, one_hot, classes)
 
     def get_data(self):
         """获取数据"""
